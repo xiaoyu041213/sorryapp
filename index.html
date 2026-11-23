@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#fff5f0">
+<title>滑跪</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{background:linear-gradient(145deg,#fff5f0,#ffe6e0);min-height:100vh;display:flex;align-items:center;justify-content:center;font-family:-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;padding:1rem;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}
+.card{background:rgba(255,255,255,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-radius:36px;padding:2.2rem 1.5rem;max-width:520px;width:100%;box-shadow:0 20px 40px rgba(200,100,100,.15);border:1px solid rgba(255,210,200,.5);text-align:center}
+.face{font-size:4.5rem;line-height:1;margin-bottom:.3rem;display:inline-block;animation:pulse 2.5s infinite ease-in-out}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+h1{font-size:2rem;color:#a14e4e;margin-bottom:.4rem}
+.sub{font-size:1rem;color:#b97a7a;font-style:italic;border-bottom:1px dashed #f0c0b0;padding-bottom:.8rem;margin-bottom:1.4rem}
+.msg-box{background:#fff9f7;border-radius:28px;padding:1.6rem 1.2rem;margin:1rem 0;border:1px solid #ffddd5;min-height:6rem;display:flex;align-items:center;justify-content:center}
+.msg{font-size:1.15rem;line-height:1.7;color:#5e3e3a;transition:opacity .3s;word-break:break-word}
+.fade{animation:fadeSlide .35s ease-out}
+@keyframes fadeSlide{0%{opacity:.2;transform:translateY(6px)}100%{opacity:1;transform:translateY(0)}}
+.btns{display:flex;flex-wrap:wrap;gap:.8rem;justify-content:center;margin-top:1.4rem}
+.btn{border:none;padding:.85rem 1.4rem;font-size:1.05rem;font-weight:500;border-radius:50px;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;justify-content:center;color:#794f4a;border:1px solid #fadcd5;flex:1 1 140px;min-width:130px;font-family:inherit;user-select:none}
+.btn:active{transform:scale(.96)}
+.primary{background:#fbd2ca;border-color:#f5b8ac;color:#603b36;font-weight:600;box-shadow:0 6px 16px rgba(220,140,130,.3)}
+.secondary{background:#fff3f0;border-color:#f0d6cf}
+.badge{margin-top:1.4rem;padding:.75rem 1.2rem;background:#e3f0e8;border-radius:50px;color:#3a6b4c;font-weight:500;font-size:.95rem;display:none;border:1px solid #b8deca}
+.badge.show{display:inline-block;animation:pop .4s ease-out}
+@keyframes pop{0%{opacity:0;transform:translateY(8px)}100%{opacity:1;transform:translateY(0)}}
+.foot{margin-top:1.4rem;font-size:.8rem;color:#bc8f86}
+@media(max-width:380px){.card{padding:1.8rem 1.1rem;border-radius:30px}h1{font-size:1.7rem}.msg{font-size:1rem}.btn{font-size:.95rem;padding:.75rem 1rem;min-width:110px}.face{font-size:3.8rem}}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="face" id="face">🥺</div>
+  <h1>对不起</h1>
+  <div class="sub">请收下我诚恳的道歉</div>
+  <div class="msg-box"><div class="msg" id="msg">我真的知道错了，原谅我好不好？</div></div>
+  <div class="btns">
+    <button class="btn secondary" id="newBtn">✨ 换一句道歉</button>
+    <button class="btn primary" id="forgiveBtn">🌸 原谅你啦</button>
+  </div>
+  <div class="badge" id="badge"></div>
+  <div class="foot">— 来自一颗愧疚的心 —</div>
+</div>
+<script>
+(function(){
+var MSGS=["我真的知道错了，原谅我好不好？","对不起，是我不好，让你难过了。","我反省了一百遍，真的非常抱歉。","都怪我，请你不要生气了嘛。","我以后一定注意，这次就原谅我吧。","你最大方了，原谅我这个笨蛋吧。","我知道错了，请你喝奶茶赔罪好不好？","我错了，真心向你道歉，对不起。","没有你的原谅，我今天晚上都睡不着。","原谅我这一次，我保证下不为例。","对不起嘛，我以后一定改。","你生气我也很难受，原谅我吧。","给我一个弥补的机会好不好？","对不起，是我不够体贴，让你伤心了。","我嘴笨，但道歉是真心的，对不起。","不要不理我嘛，我真的知道错了。","你的宽容是我最大的幸运，对不起。","我检讨，我反思，对不起请原谅。","对不起，希望你能看到我的诚意。","我错了，请再给我一次机会。"];
+var EMO=["🥺","😢","😞","🙇","💔","😿","🐶","🌸","💐","🥀"];
+var FEMO=["😊","🥰","🤗","🌸","✨","💖","😌"];
+var FMSG=["谢谢你愿意原谅我！","你真好，我以后一定好好珍惜。","太感动了，爱你～","你的宽容让我好温暖。","我会记得这次教训的！","么么哒，谢谢你的原谅。","我请你吃好吃的！"];
+var msg=document.getElementById('msg'),face=document.getElementById('face'),newBtn=document.getElementById('newBtn'),forgiveBtn=document.getElementById('forgiveBtn'),badge=document.getElementById('badge');
+var forgiven=false;
+function rnd(a){return a[Math.floor(Math.random()*a.length)]}
+function changeApology(){msg.textContent=rnd(MSGS);msg.classList.add('fade');face.textContent=rnd(EMO);setTimeout(function(){msg.classList.remove('fade')},350)}
+function resetForgive(){forgiven=false;badge.classList.remove('show');badge.textContent='';badge.style.display='none';forgiveBtn.innerHTML='🌸 原谅你啦';forgiveBtn.classList.remove('primary');forgiveBtn.classList.add('secondary')}
+newBtn.onclick=function(){if(forgiven)resetForgive();changeApology()};
+forgiveBtn.onclick=function(){
+  if(forgiven){badge.textContent=rnd(FEMO)+' '+rnd(FMSG);face.textContent=rnd(FEMO);return}
+  forgiven=true;
+  badge.textContent=rnd(FEMO)+' '+rnd(FMSG);
+  badge.style.display='inline-block';
+  badge.classList.add('show');
+  face.textContent=rnd(["😊","🥰","😌","😇","🤗","💖"]);
+  forgiveBtn.innerHTML='🎉 已原谅';
+  forgiveBtn.classList.remove('secondary');
+  forgiveBtn.classList.add('primary')
+};
+msg.textContent=rnd(MSGS);face.textContent=rnd(EMO);
+})();
+</script>
+</body>
+</html>
